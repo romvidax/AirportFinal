@@ -39,8 +39,8 @@ public class Flight {
 		
 		info=line.split(",");
 		 this.airline=info[0];
-		 this.comingFrom=info[1];
-		 this.goingTo=info[2];
+		 this.goingTo=info[1];
+		 this.comingFrom=info[2];
 		 this.time=LocalTime.parse(info[3]);
 		 this.date=LocalDate.parse(info[4]);
 		 this.terminal=Integer.parseInt(info[5]);
@@ -102,6 +102,26 @@ public class Flight {
 
 	public String getAirline() {
 		return this.airline;
+	}
+	
+	public int convertWeekdayToInt() {
+		if(getWeekday().equalsIgnoreCase("sunday"))
+			return 0;
+		if(getWeekday().equalsIgnoreCase("monday"))
+			return 1;
+		if(getWeekday().equalsIgnoreCase("tuesday"))
+			return 2;
+		if(getWeekday().equalsIgnoreCase("wednesday"))
+			return 3;
+		if(getWeekday().equalsIgnoreCase("thursday"))
+			return 4;
+		if(getWeekday().equalsIgnoreCase("friday"))
+			return 5;
+		if(getWeekday().equalsIgnoreCase("saturday"))
+			return 7;
+		
+		return -1;
+		
 	}
 
 	public boolean equals(Object other) {

@@ -101,14 +101,14 @@ public class Main {
 		while (validDest == false) {
 			// Departure name
 			System.out.println("This flight departs from: ");
-			comingFrom = scan.next();
+			goingTo= scan.next();
 			scan.nextLine();
 
 			// Arrival name compared to the Departure name
 			boolean validArrive = false;
 			while (validArrive == false) {
 				System.out.println("This flight arrives to: ");
-				goingTo = scan.next();
+				comingFrom= scan.next();
 				if (goingTo.equals(comingFrom))
 					System.out.println("Cannot arrive to a country you depart from. Try again");
 				else
@@ -239,6 +239,7 @@ public class Main {
 
 	}
 
+
 	public static ArrayList<Flight> searchFlights(Airport airport, int searchOp){
 		// if searchOp = 0----> search flight FROM a CITY
 		// if searchOp = 1----> search flight TO a CITY
@@ -269,7 +270,7 @@ public class Main {
 						results.add(fly);
 			}
 		}
-		
+
 		//COUNTRY
 		if(searchOp==3) {
 			System.out.println("Please enter the country you would like to search flights to: ");
@@ -289,7 +290,7 @@ public class Main {
 						results.add(fly);
 			}
 		}
-		
+
 		if(searchOp==5) {
 			System.out.println("Please enter the port you would like to search flights to: ");
 			searchKey=scan.next();
@@ -309,144 +310,206 @@ public class Main {
 			}
 		}
 		
-
+		
 		return results;
+
 	}
+
+
+
 	public static void main(String[] args) throws FileNotFoundException {
+
+		File airportFile=new File("Natbag2020");
+		Scanner load=new Scanner(airportFile);
+		Airport airport=new Airport(load);
+
+		//		System.out.println();
+		//		Airport airport = new Airport("Ben Gurion");
+		//		LocalDate date1 = LocalDate.of(2020, 5, 20);
+		//		LocalDate date2 = LocalDate.of(2020, 4, 20);
+		//		LocalDate date3 = LocalDate.of(2020, 3, 20);
+		//		LocalDate date4 = LocalDate.of(2020, 4, 17);
+		//		LocalDate date5 = LocalDate.of(2020, 4, 25);
+		//		LocalTime time1 = LocalTime.of(14, 02);
+		//		LocalTime time2 = LocalTime.of(19, 02);
+		//		LocalTime time3 = LocalTime.of(20, 30);
+		//		LocalTime time4 = LocalTime.of(20, 20);
+		//		Flight f1 = new Flight("El-Al", "New-York", "Israel","JFK", "New-York", "Monday", time3, date1, 3, "LY365");
+		//		Flight f2 = new Flight("JesterAirLines", "Alaska", "Israel","BDS", "Atlanta", "sunday", time3, date3, 3, "IL231");
+		//		Flight f3 = new Flight("Transvania", "Jordan", "Israel","PTA", "Petra", "saturday", time4, date4, 3, "NY786");
+		//		Flight f4 = new Flight("StarAir", "Israel", "New-York","JFK", "New-York", "friday", time1, date2, 3, "SA154");
+		//		Flight f5 = new Flight("EL-AL", "Israel", "Germany","SNF", "Berlin", "wednesday", time2, date5, 3, "FA194");
+		//
+		//		airport.addFlight(f1);
+		//		airport.addFlight(f2);
+		//		airport.addFlight(f3);
+		//		airport.addFlight(f4);
+		//		airport.addFlight(f5);
+		//
+		//
+		//
+		//		airport.save("Natbag2020");
+
 		Scanner scan = new Scanner(System.in);
-		System.out.println();
-		Airport airport = new Airport("Ben Gurion");
-		LocalDate date1 = LocalDate.of(2020, 5, 20);
-		LocalDate date2 = LocalDate.of(2020, 4, 20);
-		LocalDate date3 = LocalDate.of(2020, 3, 20);
-		LocalDate date4 = LocalDate.of(2020, 4, 17);
-		LocalDate date5 = LocalDate.of(2020, 4, 25);
-		LocalTime time1 = LocalTime.of(14, 02);
-		LocalTime time2 = LocalTime.of(19, 02);
-		LocalTime time3 = LocalTime.of(20, 30);
-		LocalTime time4 = LocalTime.of(20, 20);
-		Flight f1 = new Flight("El-Al", "New-York", "Israel","JFK", "New-York", "Monday", time3, date1, 3, "LY365");
-		Flight f2 = new Flight("JesterAirLines", "Alaska", "Israel","BDS", "Atlanta", "sunday", time3, date3, 3, "IL231");
-		Flight f3 = new Flight("Transvania", "Jordan", "Israel","PTA", "Petra", "saturday", time4, date4, 3, "NY786");
-		Flight f4 = new Flight("StarAir", "Israel", "New-York","JFK", "New-York", "friday", time1, date2, 3, "SA154");
-		Flight f5 = new Flight("EL-AL", "Israel", "Germany","SNF", "Berlin", "wednesday", time2, date5, 3, "FA194");
+		if(args.length>0) {
+			try {
+				boolean isHtml = args[0].equalsIgnoreCase("html");
+				boolean isDepartures = args[1].equalsIgnoreCase("Departures");
+				LocalDate startDate = LocalDate.of(Integer.parseInt(args[8]), Integer.parseInt(args[7]),
+						Integer.parseInt(args[6]));
+				LocalDate endDate = LocalDate.of(Integer.parseInt(args[11]), Integer.parseInt(args[10]),
+						Integer.parseInt(args[9]));
+				if (isHtml) {
+					airport.setIsDepartures(isDepartures);
+					if (isDepartures)
+						System.out.println("Departures - ");
+					else
+						System.out.println("Arrivals - ");
+					System.out.println("Fights with " + args[2]);
+					System.out.println(" To " + args[3] + "<br>");
+					airport.setCompany(args[2]);
+					airport.setCountry(args[3]);
+					airport.setCity(args[4]);
+					airport.setPort(args[5]);
 
-		airport.addFlight(f1);
-		airport.addFlight(f2);
-		airport.addFlight(f3);
-		airport.addFlight(f4);
-		airport.addFlight(f5);
+					System.out.println("Between: " + startDate + " - " + endDate + "<br>");
 
+					System.out.println("On: ");
+					boolean[] weekdays= airport.setWeekday(Boolean.parseBoolean(args[12]), Boolean.parseBoolean(args[13]),Boolean.parseBoolean(args[14]),
+							Boolean.parseBoolean(args[15]), Boolean.parseBoolean(args[16]), Boolean.parseBoolean(args[17]), Boolean.parseBoolean(args[18]));
+					if(weekdays[0])
+						System.out.print("Sunday, ");
+					if(weekdays[1])
+						System.out.print("monday, ");
+					if(weekdays[2])
+						System.out.print("Tuesday, ");
+					if(weekdays[3])
+						System.out.print("Wednesday, ");
+					if(weekdays[4])
+						System.out.print("Thursday, ");
+					if(weekdays[5])
+						System.out.print("Friday, ");
+					if(weekdays[6])
+						System.out.print("Saturday, ");
 
-
-		airport.save("Natbag2020");
-//				File airportFile=new File("Natbag2020");
-//				Scanner load=new Scanner(airportFile);
-//				Airport airport=new Airport(load);
-
-
-
-		StringBuffer menu = new StringBuffer();
-		menu.append("\n1--- Add a new Flight \n");
-		menu.append("2--- Show departures\n");
-		menu.append("3--- Show arrivals\n");
-		menu.append("4--- Show all Flights\n");
-		menu.append("5--- Search Arrivals within dates\n");
-		menu.append("6--- Search Departures within dates\n");
-		menu.append("7--- Search flights to a city\n");
-		menu.append("8--- Search flights from a city\n");
-		menu.append("9--- Search flights to a country\n");
-		menu.append("10--- Search flights from a country\n");
-		menu.append("11--- Search flights from a port\n");
-		menu.append("12--- Search flights to a port\n");
-
-		System.out.println("Welcome to Ben Gurion Airport!");
-		int select = 0;
-		ArrayList<Flight> results;
-		while (select != -1) {
-			System.out.println(menu.toString());
-			select = scan.nextInt();
-			switch (select) {
-			case 1:
-				addFlight(airport);
-				airport.save("Natbag2020");
-				break;
-			case 2:
-				System.out.println("\n---Departures---\n" + airport.getDeparture().toString());
-				break;
-			case 3:
-				System.out.println("\n---Arrivals---\n" + airport.getArrival().toString());
-
-				break;
-			case 4:
-				System.out.println(airport.toString());
-				break;
-			case 5:
-				results = searchByDate(airport, 1);
-				for (Flight flight : results)
-					System.out.println(flight.toString());
-				break;
-			case 6:
-				results = searchByDate(airport, 0);
-				for (Flight flight : results)
-					System.out.println(flight.toString());
-				break;
-			case 7:
-				results = searchFlights(airport, 0);
-				if(results.size()==0)
-					System.out.println("Could not find results.");
-				else
-					for (Flight flight : results)
-						System.out.println(flight.toString());
-				break;
-			case 8:
-				results = searchFlights(airport, 1);
-				if(results.size()==0)
-					System.out.println("Could not find results.");
-				else
-					for (Flight flight : results)
-						System.out.println(flight.toString());
-				break;
-				
-			case 9:
-				results = searchFlights(airport, 2);
-				if(results.size()==0)
-					System.out.println("Could not find results.");
-				else
-					for (Flight flight : results)
-						System.out.println(flight.toString());
-				break;
-				
-			case 10:
-				results = searchFlights(airport, 3);
-				if(results.size()==0)
-					System.out.println("Could not find results.");
-				else
-					for (Flight flight : results)
-						System.out.println(flight.toString());
-				break;
-				
-			case 11:
-				results = searchFlights(airport, 4);
-				if(results.size()==0)
-					System.out.println("Could not find results.");
-				else
-					for (Flight flight : results)
-						System.out.println(flight.toString());
-				break;
-			case 12:
-				results = searchFlights(airport, 5);
-				if(results.size()==0)
-					System.out.println("Could not find results.");
-				else
-					for (Flight flight : results)
-						System.out.println(flight.toString());
-				break;
-
-			default:
-				break;
+					System.out.println("<br><br>");
+					int index = 1;
+					ArrayList<Flight> results=airport.htmlSearchResults(startDate, endDate);
+					for (Flight f : results) {
+						System.out.println(index + ") " + f + "<br>");
+						index++;
+					}
+				}
 			}
+				 catch (Exception e) {
+				}
+			}
+		
+
+			else {
+				StringBuffer menu = new StringBuffer();
+				menu.append("\n1--- Add a new Flight \n");
+				menu.append("2--- Show departures\n");
+				menu.append("3--- Show arrivals\n");
+				menu.append("4--- Show all Flights\n");
+				menu.append("5--- Search Arrivals within dates\n");
+				menu.append("6--- Search Departures within dates\n");
+				menu.append("7--- Search flights to a city\n");
+				menu.append("8--- Search flights from a city\n");
+				menu.append("9--- Search flights to a country\n");
+				menu.append("10--- Search flights from a country\n");
+				menu.append("11--- Search flights from a port\n");
+				menu.append("12--- Search flights to a port\n");
+
+				System.out.println("Welcome to Ben Gurion Airport!");
+				int select = 0;
+				ArrayList<Flight> results;
+				while (select != -1) {
+					System.out.println(menu.toString());
+					select = scan.nextInt();
+					switch (select) {
+					case 1:
+						addFlight(airport);
+						airport.save("Natbag2020");
+						break;
+					case 2:
+						System.out.println("\n---Departures---\n" + airport.getDeparture().toString());
+						break;
+					case 3:
+						System.out.println("\n---Arrivals---\n" + airport.getArrival().toString());
+
+						break;
+					case 4:
+						System.out.println(airport.toString());
+						break;
+					case 5:
+						results = searchByDate(airport, 1);
+						for (Flight flight : results)
+							System.out.println(flight.toString());
+						break;
+					case 6:
+						results = searchByDate(airport, 0);
+						for (Flight flight : results)
+							System.out.println(flight.toString());
+						break;
+					case 7:
+						results = searchFlights(airport, 0);
+						if(results.size()==0)
+							System.out.println("Could not find results.");
+						else
+							for (Flight flight : results)
+								System.out.println(flight.toString());
+						break;
+					case 8:
+						results = searchFlights(airport, 1);
+						if(results.size()==0)
+							System.out.println("Could not find results.");
+						else
+							for (Flight flight : results)
+								System.out.println(flight.toString());
+						break;
+
+					case 9:
+						results = searchFlights(airport, 2);
+						if(results.size()==0)
+							System.out.println("Could not find results.");
+						else
+							for (Flight flight : results)
+								System.out.println(flight.toString());
+						break;
+
+					case 10:
+						results = searchFlights(airport, 3);
+						if(results.size()==0)
+							System.out.println("Could not find results.");
+						else
+							for (Flight flight : results)
+								System.out.println(flight.toString());
+						break;
+
+					case 11:
+						results = searchFlights(airport, 4);
+						if(results.size()==0)
+							System.out.println("Could not find results.");
+						else
+							for (Flight flight : results)
+								System.out.println(flight.toString());
+						break;
+					case 12:
+						results = searchFlights(airport, 5);
+						if(results.size()==0)
+							System.out.println("Could not find results.");
+						else
+							for (Flight flight : results)
+								System.out.println(flight.toString());
+						break;
+
+					default:
+						break;
+					}
+				}
+			}
+			System.out.println("Goodbye");
 		}
-		System.out.println("Goodbye");
-	}
 }
+

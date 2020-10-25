@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import javax.naming.directory.SearchControls;
+
 public class Airport {
 	private Departures myDepartures;
 	private Arrivals myArrivals;
 	private String airportName;
+	String company="", city="", port="", country=""; //variables for HTML search.
+	boolean isDepartures=false;
+	boolean[] weekdays=new boolean[7];
 
 
 	public Airport(String name ) {
@@ -22,14 +27,14 @@ public class Airport {
 	public Airport(Scanner scan) {
 		this.myDepartures = new Departures(10);
 		this.myArrivals = new Arrivals(10);
-		
+
 		this.airportName=scan.nextLine();
 		int numOfFlights=scan.nextInt();
 		for(int i=0;i<numOfFlights;i++) {
 			addFlight(new Flight(scan));
 		}
 	}
-	
+
 	public void save(String fileName) throws FileNotFoundException {
 		File save=new File(fileName);
 		PrintWriter pw=new PrintWriter(save);
@@ -38,7 +43,7 @@ public class Airport {
 		pw.println(numOfFlights);
 		myDepartures.save(pw);
 		myArrivals.save(pw);
-		
+
 		pw.close();
 	}
 	public Departures getDeparture() {
@@ -70,6 +75,100 @@ public class Airport {
 				results.add(flightArray[i]);
 		return results;
 	}
+
+	private ArrayList<Flight> searchFlightsByCountry(ArrayList<Flight> flights, String country){
+		ArrayList<Flight> results=new ArrayList<Flight>();
+		for(Flight fly:flights) 
+			if(fly.getDepartureName().equals(country))
+				results.add(fly);
+
+		return results;
+	}
+
+	private ArrayList<Flight> searchFlightsByCity(ArrayList<Flight> flights,String city){
+		ArrayList<Flight> results=new ArrayList<Flight>();
+		for(Flight fly: flights)
+			if(fly.getDepartureName().equals(city))
+				results.add(fly);
+		return results;
+	}
+
+	private ArrayList<Flight> searchFlightsByPort(ArrayList<Flight> flights,String port){
+		ArrayList<Flight> results=new ArrayList<Flight>();
+		for(Flight fly: flights) 
+			if(fly.getDepartureName().equals(port))
+				results.add(fly);
+		return results;
+	}
+
+	private ArrayList<Flight> searchFlightsByCompany(ArrayList<Flight> flights,String company){
+		ArrayList<Flight> results=new ArrayList<Flight>();
+		for(Flight fly:flights) 
+			if(fly.getDepartureName().equals(company))
+				results.add(fly);
+		return results;
+	}
+
+	private ArrayList<Flight> searchFlightsByWeekdays(ArrayList<Flight> flights, boolean[] weekdays){
+		ArrayList<Flight> results=new ArrayList<Flight>();
+		int flightDay;
+		for(Flight fly:flights) {
+			flightDay=fly.convertWeekdayToInt();
+				if(weekdays[flightDay])
+					results.add(fly);
+		}
+		return results;
+	}
+
+	public void setIsDepartures(boolean isDepart) {
+		this.isDepartures=isDepart;
+	}
+
+	public void setCompany(String company) {
+		this.company=company;
+
+	}
+	public void setCountry(String country) {
+		this.country=country;
+	}
+	public void setCity(String city) {
+		this.city=city;
+	}
+	public void setPort(String port) {
+		this.airportName=port;
+	}
+	public boolean[] setWeekday(boolean sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday) {
+		boolean[] weekdays=new boolean[7];
+		weekdays[0]=sunday;
+		weekdays[1]=monday;
+		weekdays[2]=tuesday;
+		weekdays[3]=wednesday;
+		weekdays[4]=thursday;
+		weekdays[5]=friday;
+		weekdays[6]=saturday;
+		this.weekdays=weekdays;
+	
+		return weekdays;
+	}
+	
+
+
+	public ArrayList<Flight> htmlSearchResults(LocalDate lowDate, LocalDate highDate){
+		ArrayList<Flight> results;
+		if(isDepartures)
+			results=searchDeparturesByDate(getDeparture().getFlights(), lowDate, highDate);
+		else
+			results=searchArrivalsByDate(getArrival().getFlights(), lowDate, highDate);
+
+		results=searchFlightsByCompany(results,company);
+		results=searchFlightsByCity(results,city);
+		results=searchFlightsByCountry(results,country);
+		results=searchFlightsByPort(results,airportName);
+		results=searchFlightsByWeekdays(results, weekdays);
+
+		return results;
+	}
+
 
 
 	@Override
