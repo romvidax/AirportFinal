@@ -71,6 +71,7 @@ public class Airport {
 	public ArrayList<Flight> searchDeparturesByDate(Flight[] flightArray,LocalDate lowDate, LocalDate highDate){
 		ArrayList<Flight> results=new ArrayList<Flight>();
 		for(int i=0;i<flightArray.length;i++)
+			if(flightArray[i]!=null)
 			if((flightArray[i].getDate().compareTo(lowDate)>=0) && (flightArray[i].getDate().compareTo(highDate)<=0))
 				results.add(flightArray[i]);
 		return results;
@@ -88,7 +89,7 @@ public class Airport {
 	private ArrayList<Flight> searchFlightsByCity(ArrayList<Flight> flights,String city){
 		ArrayList<Flight> results=new ArrayList<Flight>();
 		for(Flight fly: flights)
-			if(fly.getDepartureName().equals(city))
+			if(fly.getCity().equals(city))
 				results.add(fly);
 		return results;
 	}
@@ -96,7 +97,7 @@ public class Airport {
 	private ArrayList<Flight> searchFlightsByPort(ArrayList<Flight> flights,String port){
 		ArrayList<Flight> results=new ArrayList<Flight>();
 		for(Flight fly: flights) 
-			if(fly.getDepartureName().equals(port))
+			if(fly.getPort().equals(port))
 				results.add(fly);
 		return results;
 	}
@@ -104,7 +105,7 @@ public class Airport {
 	private ArrayList<Flight> searchFlightsByCompany(ArrayList<Flight> flights,String company){
 		ArrayList<Flight> results=new ArrayList<Flight>();
 		for(Flight fly:flights) 
-			if(fly.getDepartureName().equals(company))
+			if(fly.getAirline().equals(company))
 				results.add(fly);
 		return results;
 	}
@@ -135,7 +136,7 @@ public class Airport {
 		this.city=city;
 	}
 	public void setPort(String port) {
-		this.airportName=port;
+		this.port=port;
 	}
 	public boolean[] setWeekday(boolean sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday) {
 		boolean[] weekdays=new boolean[7];
@@ -154,7 +155,7 @@ public class Airport {
 
 
 	public ArrayList<Flight> htmlSearchResults(LocalDate lowDate, LocalDate highDate){
-		ArrayList<Flight> results;
+		ArrayList<Flight> results=new ArrayList<Flight>();
 		if(isDepartures)
 			results=searchDeparturesByDate(getDeparture().getFlights(), lowDate, highDate);
 		else
@@ -163,7 +164,7 @@ public class Airport {
 		results=searchFlightsByCompany(results,company);
 		results=searchFlightsByCity(results,city);
 		results=searchFlightsByCountry(results,country);
-		results=searchFlightsByPort(results,airportName);
+		results=searchFlightsByPort(results,port);
 		results=searchFlightsByWeekdays(results, weekdays);
 
 		return results;
