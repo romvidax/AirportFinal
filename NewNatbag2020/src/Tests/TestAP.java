@@ -29,15 +29,15 @@ public class TestAP extends TestCase {
 
 	@Test
 	public void addOutFlightTest() {
-		ap.addFlight(f4);
-		assertTrue(ap.getArrival().getFlightById("SA154").toString().equals(
-				"Flight: SA154, Airline:StarAir,  Departure: Israel, Arrival: New-York, port: JFK, city:New-York , Departures on: 20/4/2020, Arrival Time: 14:02, weekday: friday\n"));
+		ap.addFlight(f2);
+		assertTrue(ap.getDeparture().getFlightById("IL231").toString().equals(
+				"Flight: IL231, Airline:JesterAirLines,  Departure: Israel, Arrival: Alaska, port: BDS, city:Atlanta , Departures on: 20/3/2020, Arrival Time: 20:30, weekday: sunday\n"));
 	}
 	
 	@Test
 	public void addInFlightTest() {
-		ap.addFlight(f2);
-		assertTrue(ap.getDeparture().getFlightById("IL231").toString().equals(
+		ap.addFlight(f4);
+		assertTrue(ap.getArrival().getFlightById("SA154").toString().equals(
 				"Flight: SA154, Airline:StarAir,  Departure: New-York, Arrival: Israel, port: JFK, city:New-York , Departures on: 20/4/2020, Arrival Time: 14:02, weekday: friday\n"));
 	}
 

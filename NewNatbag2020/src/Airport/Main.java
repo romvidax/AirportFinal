@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
-import javafx.util.converter.LocalDateStringConverter;
 
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -321,7 +320,7 @@ public class Main {
 
 	public static void main(String[] args) throws FileNotFoundException {
 
-		File airportFile=new File("C:\\Users\\romvi\\git\\AirportFinal\\NewNatbag2020\\Natbag2020");
+		File airportFile=new File("/home/rom/git/AirportFinal/NewNatbag2020/Natbag2020");
 		Scanner load=new Scanner(airportFile);
 		Airport airport=new Airport(load);
 		Scanner scan = new Scanner(System.in);
@@ -388,26 +387,6 @@ public class Main {
 
 
 		else {
-
-			//				airport.setIsDepartures(true);
-			//				airport.setCompany("elal");
-			//				airport.setCountry("france");
-			//				airport.setCity("paris");
-			//				airport.setPort("CDG");
-			//				LocalDate startDate=LocalDate.of(2020, 6, 4);		
-			//				LocalDate endDate=LocalDate.of(2020, 7, 31);
-			//				airport.setWeekday(true, true, true, true, true, true, true);
-			//				
-			//				ArrayList<Flight> results2=airport.htmlSearchResults(startDate, endDate);
-			//				int index=1;
-			//				for (Flight f : results2) {
-			//					System.out.println(index + ") " + f + "<br>");
-			//					index++;
-			//				}
-
-
-
-
 
 			StringBuffer menu = new StringBuffer();
 			menu.append("\n1--- Add a new Flight \n");
